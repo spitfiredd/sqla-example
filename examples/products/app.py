@@ -1,5 +1,5 @@
 from .products import Product
-from .common import session_factory
+from ..common import session_factory
 
 
 products = [

@@ -11,7 +11,7 @@ After you environment is setup run `pipenv shell` to activate your environment.
 You can now run an example, for example,
 
 ```
-python -m examples.app
+python -m examples.products.app
 ```
 
 More examples coming soon!!
