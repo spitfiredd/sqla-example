@@ -14,6 +14,22 @@ You can now run an example, for example,
 python -m examples.products.app
 ```
 
+### TsVector Example
+
+This examples will create a searchable column using postgres built in `tsvector_update_trigger`, to run the examples execute the following,
+
+```
+python -m examples.tsvector.create
+python -m examples.tsvector.populate
+```
+
+Running those two scripts will populate a sample database using [Faker][1] to generate fake data.  If you want to drop the table run `python -m examples.tsvector.drop` with drop using `CASCADE`.
+
+Here is an example of my table,
+
+![Image of Table][2]
+
+
 More examples coming soon!!
 
 ## Running the tests
@@ -38,3 +54,7 @@ Will probably use versioneer at some later date.
 * **Daniel Donovan** - *Initial work* - [email](mailto:spitfiredd@gmail.com)
 
 ## License
+
+
+[1]: https://faker.readthedocs.io/en/latest/providers/faker.providers.python.html
+[2]: https://i.imgur.com/Ljc0fhU.png
