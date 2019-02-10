@@ -5,6 +5,8 @@ from ..common import create_table
 
 
 if __name__ == "__main__":
+    # use postgres built in trigger tsvector_update_trigger
+    # https://www.postgresql.org/docs/10/functions-textsearch.html
     trig_searchable_tsvector_stmt = """
     CREATE TRIGGER trig_searchable_tsvector BEFORE INSERT OR UPDATE
     ON company
