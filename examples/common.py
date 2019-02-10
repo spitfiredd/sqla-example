@@ -4,6 +4,8 @@ from sqlalchemy import create_engine, inspect, UniqueConstraint
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.schema import DropTable
+from sqlalchemy.ext.compiler import compiles
 
 '''
 Visit https://www.elephantsql.com/ if you need an quick and simple Postgres
@@ -19,8 +21,22 @@ _SessionFactory = sessionmaker(bind=engine)
 Base = declarative_base()
 
 
-def session_factory():
-    Base.metadata.create_all(engine)
+@compiles(DropTable, "postgresql")
+def _compile_drop_table(element, compiler, **kwargs):
+    return compiler.visit_drop_table(element) + " CASCADE"
+
+
+def drop_table(model, engine=engine):
+    model.__table__.drop(engine)
+
+
+def create_table(model, engine=engine):
+    model.__table__.create(engine)
+
+
+def session_factory(create=True):
+    if create:
+        Base.metadata.create_all(engine)
     return _SessionFactory()
 
 
