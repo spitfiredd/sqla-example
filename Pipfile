@@ -12,6 +12,7 @@ ipython = "*"
 sqlalchemy = "*"
 faker = "*"
 mimesis = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

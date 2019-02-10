@@ -4,12 +4,14 @@ from ..common import session_factory, postgres_upsert
 
 products = [
     {
+        'id': 1,
         'name': 'Scissors',
         'in_stock': True,
         'quantity': 20,
         'price': 3.99
     },
     {
+        'id': 2,
         'name': 'Stapler',
         'in_stock': True,
         'quantity': 25,
@@ -20,7 +22,7 @@ products = [
 
 def _upsert():
     session = session_factory()
-    postgres_upsert(session, Product, ['in_stock', 'quantity', 'price'])
+    postgres_upsert(session, Product, products)
 
 
 if __name__ == "__main__":

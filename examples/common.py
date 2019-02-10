@@ -1,9 +1,13 @@
+import os
+
 from sqlalchemy import create_engine, inspect, UniqueConstraint
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('sqlite:///sample.db', echo=True)
+DATABASE_URL = os.getenv('ELEPHANT_DATABASE_URI', default='sqlite:///sample.db')
+
+engine = create_engine(DATABASE_URL, echo=True)
 
 _SessionFactory = sessionmaker(bind=engine)
 
@@ -15,7 +19,7 @@ def session_factory():
     return _SessionFactory()
 
 
-def postgres_upsert(session, model, rows):
+def postgres_upsert(session, model, rows=[]):
     '''Postgres upsert (wont work on other databases)
 
     Args:
@@ -64,3 +68,4 @@ def postgres_upsert(session, model, rows):
 
     rows = list(filter(None, (handle_foreignkeys_constraints(row) for row in rows)))
     session.execute(stmt, rows)
+    session.commit()
