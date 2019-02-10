@@ -5,6 +5,11 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+'''
+Visit https://www.elephantsql.com/ if you need an quick and simple Postgres
+instance. Same guys who brought you CloudAMPQ, I choose them because I liked
+how they named their instances.
+'''
 DATABASE_URL = os.getenv('ELEPHANT_DATABASE_URI', default='sqlite:///sample.db')
 
 engine = create_engine(DATABASE_URL, echo=True)
@@ -19,14 +24,14 @@ def session_factory():
     return _SessionFactory()
 
 
-def postgres_upsert(session, model, rows=[]):
+def postgres_upsert(session, model, rows):
     '''Postgres upsert (wont work on other databases)
 
     Args:
         session (sqlalchemy session): Sqlachemy Session
         model (sqlachemy.orm Model): Orm Model for the table you want to upsert
         records.
-        rows (list): list of rows to upert.
+        rows (list): list of dict for rows to upsert, must include primary key.
 
     Raises:
         ValueError: update_dict is empty
