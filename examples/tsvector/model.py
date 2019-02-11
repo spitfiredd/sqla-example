@@ -4,8 +4,6 @@ from sqlalchemy.sql import func
 from sqlalchemy import DDL, event
 
 
-
-
 from ..common import Base
 from ..surrogate import SurrogatePK
 
