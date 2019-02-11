@@ -57,4 +57,4 @@ Will probably use versioneer at some later date.
 
 
 [1]: https://faker.readthedocs.io/en/latest/providers/faker.providers.python.html
-[2]: https://i.imgur.com/Ljc0fhU.png
+[2]: https://i.imgur.com/KYbQN9H.png

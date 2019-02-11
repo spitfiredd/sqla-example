@@ -12,7 +12,7 @@ def populate_database():
     for _ in range(10):
         company = Company(
             name=fake.company(),
-            address=fake.address(),
+            address=fake.street_address(),
             city=fake.city(),
             state=fake.state(),
             about=fake.bs()
