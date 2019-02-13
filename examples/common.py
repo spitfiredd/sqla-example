@@ -26,6 +26,68 @@ def _compile_drop_table(element, compiler, **kwargs):
     return compiler.visit_drop_table(element) + " CASCADE"
 
 
+class Database:
+    """ Wrapper class for working with sqlalchemy sessions.
+
+    Args:
+        echo (bool): Turns on sqlalchemy echo options, useful for debugging
+        queries.
+
+    Attributes:
+        url (str): Database url string, should be stored in env variable,
+        defaults to `'sqlite:///sample.db'`
+        echo (bool): Turns on sqlalchemy echo options, useful for debugging
+        queries.
+
+    """
+    url = os.getenv('ELEPHANT_DATABASE_URI', default='sqlite:///sample.db')
+
+    def __init__(self, echo=False):
+        self.echo = echo
+
+    @property
+    def engine(self):
+        return create_engine(self.url, echo=self.echo)
+
+    @property
+    def session(self):
+        Session = sessionmaker(bind=self.engine)
+        return Session()
+
+    def drop_table(self, model):
+        """Drop table
+
+        Args:
+            model (`sqlalchemy.ext.declarative.api.DeclarativeMeta`):
+            Sqlalchemy orm model.
+        """
+        model.__table__.drop(self.engine)
+
+    def create_table(self, model):
+        """Create table
+
+        Args:
+            model (`sqlalchemy.ext.declarative.api.DeclarativeMeta`):
+            Sqlalchemy orm model.
+        """
+        model.__table__.create(self.engine)
+
+    def table_exists(self, model):
+        """
+        Check if a table exists.
+
+        Args:
+            model (`sqlalchemy.ext.declarative.api.DeclarativeMeta`):
+            Sqlalchemy orm model.
+
+        Returns:
+            bool: true if the table exists, other false.
+        """
+        table = model.__tablename__
+        exists = self.engine.dialect.has_table(self.engine, table)
+        return exists
+
+
 def drop_table(model, engine=engine):
     model.__table__.drop(engine)
 
