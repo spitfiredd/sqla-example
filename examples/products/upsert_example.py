@@ -1,30 +1,28 @@
+import random
+from mimesis import Business, Food
+
 from .products import Product
-from ..common import session_factory, postgres_upsert
+from ..common import Database, postgres_upsert
 
 
-products = [
-    {
-        'id': 1,
-        'name': 'Scissors',
-        'in_stock': True,
-        'quantity': 20,
-        'price': 3.99
-    },
-    {
-        'id': 2,
-        'name': 'Stapler',
-        'in_stock': True,
-        'quantity': 25,
-        'price': 7.99
-    }
-]
-
-
-def _upsert():
-    session = session_factory()
-    postgres_upsert(session, Product, products)
+def generate_initial_date(obs=50):
+    data = []
+    for i in range(1, obs):
+        in_stock = random.choice([True, False])
+        item = {
+            'id': i,
+            'name': random.choice([Food().fruit(), Food().vegetable()]),
+            'in_stock': in_stock,
+            'quantity': random.randint(1, 20) if in_stock else 0,
+            'price': random.uniform(0.39, 3.99)
+        }
+        data.append(item)
+    return data
 
 
 if __name__ == "__main__":
-    # Install postgres first!
-    _upsert()
+    db = Database(echo=True)
+    if db.table_exists(Product):
+        db.drop_table(Product)
+    db.create_table(Product)
+    postgres_upsert(db.session, Product, generate_initial_date())

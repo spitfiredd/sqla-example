@@ -1,4 +1,7 @@
-from faker import Faker
+import random
+from mimesis import Person
+from mimesis.enums import Gender
+from mimesis.builtins import USASpecProvider
 
 from .anon import Anon
 from .users import User
@@ -7,10 +10,18 @@ from ..common import Database
 
 
 def populate_database(session):
-    fake = Faker()
+    genders = [Gender.FEMALE, Gender.MALE]
     for _ in range(5):
-        user = User(name=fake.name(), ssn=fake.ssn())
-        anon = Anon(name=fake.name(), ssn=fake.ssn(), reference=user)
+        gender = random.choice(genders)
+        user = User(
+            name=Person('en').full_name(gender=gender),
+            ssn=USASpecProvider().ssn()
+        )
+        anon = Anon(
+            name=Person('en').full_name(gender=gender),
+            ssn=USASpecProvider().ssn(),
+            reference=user
+        )
 
         session.add(anon)
     session.commit()
