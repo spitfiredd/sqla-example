@@ -1,4 +1,3 @@
-from .compat import basestring
 from sqlalchemy import Integer, Column
 
 
@@ -12,14 +11,3 @@ class SurrogatePK(object):
     __table__args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
-
-    @classmethod
-    def get_by_id(cls, rec_id):
-        if any(
-            (
-                isinstance(rec_id, basestring) and rec_id.isdigit(),
-                isinstance(rec_id, (int, float))
-            )
-        ):
-            return cls.query.get(int(rec_id))
-        return None

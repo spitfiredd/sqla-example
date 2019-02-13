@@ -7,16 +7,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.schema import DropTable
 from sqlalchemy.ext.compiler import compiles
 
-'''
+"""
 Visit https://www.elephantsql.com/ if you need an quick and simple Postgres
 instance. Same guys who brought you CloudAMPQ, I choose them because I liked
 how they named their instances.
-'''
-DATABASE_URL = os.getenv('ELEPHANT_DATABASE_URI', default='sqlite:///sample.db')
-
-engine = create_engine(DATABASE_URL, echo=True)
-
-_SessionFactory = sessionmaker(bind=engine)
+"""
 
 Base = declarative_base()
 
@@ -27,7 +22,8 @@ def _compile_drop_table(element, compiler, **kwargs):
 
 
 class Database:
-    """ Wrapper class for working with sqlalchemy sessions.
+    """ Wrapper class for working with sqlalchemy sessions, useful for
+    managing sessions.
 
     Args:
         echo (bool): Turns on sqlalchemy echo options, useful for debugging
@@ -88,20 +84,6 @@ class Database:
         table = model.__tablename__
         exists = self.engine.dialect.has_table(self.engine, table)
         return exists
-
-
-def drop_table(model, engine=engine):
-    model.__table__.drop(engine)
-
-
-def create_table(model, engine=engine):
-    model.__table__.create(engine)
-
-
-def session_factory(create=True):
-    if create:
-        Base.metadata.create_all(engine)
-    return _SessionFactory()
 
 
 def postgres_upsert(session, model, rows):
