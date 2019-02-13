@@ -1,6 +1,7 @@
 from .model import Company
-from ..common import drop_table
+from ..common import Database
 
 
 if __name__ == "__main__":
-    drop_table(Company)
+    db = Database(echo=True)
+    db.drop_table(Company)

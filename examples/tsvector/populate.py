@@ -1,15 +1,14 @@
 from faker import Faker
 
-from .model import Company
-from ..common import session_factory
+from .model import Company, build_tsvector_trigger
+from ..common import Database
 
 
 fake = Faker()
 
 
-def populate_database():
-    session = session_factory()
-    for _ in range(10):
+def populate_database(session, nobs=10):
+    for _ in range(nobs):
         company = Company(
             name=fake.company(),
             address=fake.street_address(),
@@ -22,4 +21,9 @@ def populate_database():
 
 
 if __name__ == "__main__":
-    populate_database()
+    db = Database(echo=True)
+    if db.table_exists(Company):
+        db.drop_table(Company)
+    build_tsvector_trigger()
+    db.create_table(Company)
+    populate_database(db.session)
