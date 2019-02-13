@@ -11,7 +11,7 @@ class Product(SurrogatePK, Base):
     name = Column(String(32))
     in_stock = Column(Boolean)
     quantity = Column(Integer)
-    price = Column(Numeric)
+    price = Column(Numeric(6, 2))
 
     def __repr__(self):
         return f'<Product(name={self.name}, id={self.id})>'

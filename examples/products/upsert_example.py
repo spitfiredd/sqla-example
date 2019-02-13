@@ -14,7 +14,7 @@ def generate_initial_date(obs=50):
             'name': random.choice([Food().fruit(), Food().vegetable()]),
             'in_stock': in_stock,
             'quantity': random.randint(1, 20) if in_stock else 0,
-            'price': random.uniform(0.39, 3.99)
+            'price': round(random.uniform(0.89, 3.99), 2)
         }
         data.append(item)
     return data
