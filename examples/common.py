@@ -40,9 +40,11 @@ class Database:
         queries.
 
     """
-    url = os.getenv('ELEPHANT_DATABASE_URI', default='sqlite:///sample.db')
+    url = os.getenv('ELEPHANT_DATABASE_URI', default=None)
 
     def __init__(self, echo=False):
+        if not self.url:
+            raise ValueError("ELEPHANT_DATABASE_URI not set, use postgres URL.")
         self.echo = echo
 
     @property
