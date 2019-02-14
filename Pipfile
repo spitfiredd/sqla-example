@@ -13,6 +13,7 @@ sqlalchemy = "*"
 faker = "*"
 mimesis = "*"
 psycopg2 = "*"
+click = "*"
 
 [requires]
 python_version = "3.7"

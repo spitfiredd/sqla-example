@@ -8,16 +8,6 @@ from ..common import Base
 from ..surrogate import SurrogatePK
 
 
-def to_tsvector_ix(*columns):
-    '''Helper function to create TSVector on multiple columns.
-
-    Returns:
-        str: column names, e.g. 'city', 'state', 'about', ect...
-    '''
-    s = " || ' ' || ".join(columns)
-    return func.to_tsvector('english', text(s))
-
-
 class Company(SurrogatePK, Base):
     __tablename__ = 'company'
 
