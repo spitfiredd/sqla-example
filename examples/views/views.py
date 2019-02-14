@@ -27,7 +27,7 @@ def compile(element, compiler, **kwargs):
     return f'DROP VIEW {element.name}'
 
 
-def create_view(name, selectable, metadata):
+def create_view(name, metadata, selectable):
     t = table(name)
 
     for c in selectable.c:
