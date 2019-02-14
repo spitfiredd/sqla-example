@@ -2,7 +2,7 @@ import random
 from mimesis import Person, Code
 
 from ..common import Database, postgres_upsert
-from .model import Employee
+from .model import Employee, employee_bonus_view
 
 
 def generate_initial_date(obs=50):
@@ -30,3 +30,4 @@ if __name__ == "__main__":
         db.drop_table(Employee)
     db.create_table(Employee)
     postgres_upsert(db.session, Employee, generate_initial_date())
+    db.engine.execute(employee_bonus_view)

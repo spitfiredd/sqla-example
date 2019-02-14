@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Text, Numeric, Integer
+from sqlalchemy import Column, Text, Numeric
 from sqlalchemy.sql import select
 
-from ..common import Base, Database
+from ..common import Base
 from ..surrogate import SurrogatePK
 
-from .views import create_view
+from .views import CreateView
 
 
 class Employee(Base, SurrogatePK):
@@ -19,23 +19,13 @@ class Employee(Base, SurrogatePK):
     performance_score = Column(Numeric(4, 2))
 
 
-class EmployeeBonusView(Base):
-    bonus_view = create_view(
-        'employee_bonus_view',
-        Database().metadata,
-        select(
-            [
-                Employee.id,
-                (Employee.salary * 0.15).label('bonus_opportunity'),
-                (Employee.salary * 0.15 * Employee.performance_score).label('bonus')
-            ]
-        )
+employee_bonus_view = CreateView(
+    'employee_bonus_view',
+    select(
+        [
+            Employee.id,
+            (Employee.salary * 0.15).label('bonus_opportunity'),
+            (Employee.salary * 0.15 * Employee.performance_score).label('bonus')
+        ]
     )
-    __table__ = bonus_view
-
-# Finishe tomorrow
-# class EmployeeBonusView(Base):
-#     __table__ = create_materialized_view(
-#         'mv_employee_bonus',
-#         #TODO: enter a query here.
-#     )
+)
