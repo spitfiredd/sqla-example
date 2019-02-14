@@ -3,7 +3,7 @@ from sqlalchemy import Column, Text, Numeric
 from ..common import Base
 from ..surrogate import SurrogatePK
 
-from .factory import create_materialized_view
+from .materialized import create_materialized_view
 
 
 class Employee(Base, SurrogatePK):
