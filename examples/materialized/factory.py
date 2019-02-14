@@ -2,6 +2,7 @@ from sqlalchemy.ext import compiler
 from sqlalchemy.schema import DDLElement
 from sqlalchemy import MetaData, Table, event, Column, DDL
 
+
 class CreateMaterializedView(DDLElement):
     def __init__(self, name, selectable):
         self.name = name
