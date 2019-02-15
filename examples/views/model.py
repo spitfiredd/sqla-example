@@ -25,7 +25,7 @@ employee_bonus_view = CreateView(
         [
             Employee.id,
             (Employee.salary * 0.15).label('bonus_opportunity'),
-            (Employee.salary * 0.15 * Employee.performance_score).label('bonus')
+            ((Employee.salary * 0.15) * (Employee.performance_score / 5)).label('bonus')
         ]
     )
 )
