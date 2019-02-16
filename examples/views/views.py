@@ -4,27 +4,38 @@ from sqlalchemy.ext import compiler
 
 
 class CreateView(DDLElement):
-    def __init__(self, name, selectable):
+    def __init__(self, name, selectable, replace=True):
         self.name = name
         self.selectable = selectable
-
-
-class DropView(DDLElement):
-    def __init__(self, name):
-        self.name = name
+        self.replace = replace
 
 
 @compiler.compiles(CreateView)
-def compile(element, compiler, **kwargs):
-    return 'CREATE VIEW {} AS {}'.format(
-        element.name,
-        compiler.sql_compiler.process(element.selectable, literal_binds=True)
-    )
+def complile_create_view(element, compiler, **kwargs):
+    ddl = "CREATE "
+    if element.replace:
+        ddl += "OR REPLACE "
+    ddl += f"VIEW {element.name} "
+    ddl += f"AS {compiler.sql_compiler.process(element.selectable,literal_binds=True)}"
+    return ddl
+
+
+class DropView(DDLElement):
+    def __init__(self, name, if_exists=True, cascade=True):
+        self.name = name
+        self.if_exists = if_exists
+        self.cascade = cascade
 
 
 @compiler.compiles(DropView)
-def compile(element, compiler, **kwargs):
-    return f'DROP VIEW {element.name}'
+def compile_drop_view(element, compiler, **kwargs):
+    ddl = "DROP VIEW "
+    if element.if_exists:
+        ddl += "IF EXISTS "
+    ddl += f"{element.name} "
+    if element.cascade:
+        ddl += "CASCADE"
+    return ddl
 
 
 def create_view(name, metadata, selectable):
