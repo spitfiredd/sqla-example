@@ -7,6 +7,8 @@ verify_ssl = true
 pylint = "*"
 flake8 = "*"
 ipython = "*"
+pytest = "*"
+factory-boy = "*"
 
 [packages]
 sqlalchemy = "*"
