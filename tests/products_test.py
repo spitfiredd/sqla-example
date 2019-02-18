@@ -27,7 +27,7 @@ def connection():
 def session(connection):
     transaction = connection.begin()
     session = Session(bind=connection)
-    ProductFactory._meta.sqlalchemy_session = session # NB: This line added
+    ProductFactory._meta.sqlalchemy_session = session
     yield session
     session.close()
     transaction.rollback()
