@@ -32,9 +32,9 @@ def compile_drop_view(element, compiler, **kwargs):
     ddl = "DROP VIEW "
     if element.if_exists:
         ddl += "IF EXISTS "
-    ddl += f"{element.name} "
+    ddl += f"{element.name}"
     if element.cascade:
-        ddl += "CASCADE"
+        ddl += " CASCADE"
     return ddl
 
 
